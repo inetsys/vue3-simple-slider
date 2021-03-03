@@ -1,0 +1,44 @@
+{
+  "name": "@inetsys/vue3-simple-slider",
+  "version": "1.0.0",
+  "description": "Simple slider input for Vue3",
+  "main": "dist/vue3-simple-slider.common.js",
+  "module": "src/main.js",
+  "keywords": [
+    "slider",
+    "vue3"
+  ],
+  "repository": "github:inetsys/vue3-simple-slider",
+  "bugs": "https://github.com/inetsys/vue3-simple-slider/issues",
+  "license": "MIT",
+  "scripts": {
+    "serve": "vue-cli-service serve demo/dev.js",
+    "build": "vue-cli-service build --target lib --name InetsysSimpleSlider src/main.js",
+    "lint": "vue-cli-service lint",
+    "prepack": "yarn run build && rm dist/demo.html"
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "vue": "^3.0.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0",
+    "@vue/eslint-config-standard": "^5.1.2",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "eslint-plugin-vue": "^7.0.0-0",
+    "less": "^3.0.4",
+    "less-loader": "^5.0.0"
+  }
+}
