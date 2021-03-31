@@ -8,6 +8,10 @@
 import { ref, onMounted, watch, computed } from 'vue'
 import nouislider from 'nouislider'
 
+function directionIsValid(direction) {
+    return ['rtl', 'ltr'].indexOf(direction) > -1
+}
+
 function toggleDisabled(element, disable) {
     if (disable) {
         element.setAttribute('disabled', true)
@@ -15,6 +19,42 @@ function toggleDisabled(element, disable) {
     else if (element.hasAttribute('disabled')) {
         element.removeAttribute('disabled')
     }
+}
+
+function createSlider(element, definition, context) {
+    const initialValue = definition.modelValue !== null ? definition.modelValue : definition.min
+    if (definition.modelValue === null) {
+        context.emit('update:modelValue', initialValue.toFixed(2))
+    }
+
+    const sliderOptions = {
+        cssPrefix: 'slider--',
+        start: initialValue,
+        range: {
+            min: definition.min,
+            max: definition.max,
+        },
+        connect: [true, true],
+        tooltips: definition.showValue,
+        direction: definition.direction,
+    }
+    if (definition.step !== null) {
+        sliderOptions.step = definition.step
+    }
+
+    const slider = nouislider.create(element, sliderOptions)
+    slider.on('change', function(values, handle, unencoded, tap, positions, noUiSlider) {
+        context.emit('update:modelValue', values[0])
+    })
+
+    return slider
+}
+
+function recreateSlider(slider, element, definition, context) {
+    slider.destroy()
+    slider = createSlider(element, definition, context)
+
+    return slider
 }
 
 export default {
@@ -44,35 +84,20 @@ export default {
             type: Boolean,
             default: false,
         },
+        direction: {
+            type: String,
+            default: 'ltr',
+            validator(value) {
+                return directionIsValid(value)
+            },
+        },
     },
     setup(props, context) {
         const sliderEl = ref(null)
         const slider = ref(null)
 
         onMounted(() => {
-            const initialValue = props.modelValue !== null ? props.modelValue : props.min
-            if (props.modelValue === null) {
-                context.emit('update:modelValue', initialValue.toFixed(2))
-            }
-
-            const sliderOptions = {
-                cssPrefix: 'slider--',
-                start: initialValue,
-                range: {
-                    min: props.min,
-                    max: props.max,
-                },
-                connect: [true, true],
-                tooltips: props.showValue,
-            }
-            if (props.step !== null) {
-                sliderOptions.step = props.step
-            }
-
-            slider.value = nouislider.create(sliderEl.value, sliderOptions)
-            slider.value.on('change', function(values, handle, unencoded, tap, positions, noUiSlider) {
-                context.emit('update:modelValue', values[0])
-            })
+            slider.value = createSlider(sliderEl.value, props, context)
 
             watch(() => props.disabled, (newValue) => toggleDisabled(slider.value.target, newValue), {
                 immediate: true,
@@ -80,6 +105,11 @@ export default {
             watch(() => props.modelValue, newValue => {
                 if (slider.value.get() !== newValue) {
                     slider.value.set(newValue)
+                }
+            })
+            watch(() => props.direction, newValue => {
+                if (directionIsValid(newValue)) {
+                    slider.value = recreateSlider(slider.value, sliderEl.value, props, context)
                 }
             })
         })

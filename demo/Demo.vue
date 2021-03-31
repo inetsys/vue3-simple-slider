@@ -50,6 +50,34 @@
         show-value
     />
     <pre>Value: {{ example05.value }}</pre>
+
+    <h2>6.- Language direction - right to left</h2>
+    <slider
+        v-model="example06.value"
+        :min="example06.min"
+        :max="example06.max"
+        :direction="example06.direction"
+        show-value
+    />
+    <div>
+        <label>
+            <input type="radio"
+                value="ltr"
+                v-model="example06.direction"
+                name="example06direction"
+            >
+            Left to right
+        </label>
+        <label>
+            <input type="radio"
+                value="rtl"
+                v-model="example06.direction"
+                name="example06direction"
+            >
+            Right to left
+        </label>
+    </div>
+    <pre>Value: {{ example06.value }}</pre>
 </template>
 
 <script>
@@ -89,6 +117,13 @@ export default {
                 min: 0,
                 max: 10,
                 step: 1,
+            },
+            example06: {
+                value: 0,
+                min: 0,
+                max: 10,
+                step: 1,
+                direction: 'rtl',
             },
         }
     },
