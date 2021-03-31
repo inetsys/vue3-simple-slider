@@ -1,6 +1,6 @@
 {
   "name": "@inetsys/vue3-simple-slider",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Simple slider input for Vue3",
   "main": "dist/vue3-simple-slider.common.js",
   "module": "src/main.js",
