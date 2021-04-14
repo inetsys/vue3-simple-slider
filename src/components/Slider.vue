@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { ref, onMounted, watch, computed } from 'vue'
+import { ref, onMounted, watch, watchEffect, computed } from 'vue'
 import nouislider from 'nouislider'
 
 function directionIsValid(direction) {
@@ -21,11 +21,26 @@ function toggleDisabled(element, disable) {
     }
 }
 
+function updateTooltip(slider, definition) {
+    const tooltipFormatter = definition.format
+        ? { to: definition.format }
+        : true
+    const sliderOptions = {
+        tooltips: definition.showValue ? tooltipFormatter : false,
+    }
+
+    slider.updateOptions(sliderOptions)
+}
+
 function createSlider(element, definition, context) {
     const initialValue = definition.modelValue !== null ? definition.modelValue : definition.min
     if (definition.modelValue === null) {
         context.emit('update:modelValue', initialValue.toFixed(2))
     }
+
+    const tooltipFormatter = definition.format
+        ? { to: definition.format }
+        : true
 
     const sliderOptions = {
         cssPrefix: 'slider--',
@@ -35,7 +50,7 @@ function createSlider(element, definition, context) {
             max: definition.max,
         },
         connect: [true, true],
-        tooltips: definition.showValue,
+        tooltips: definition.showValue ? tooltipFormatter : false,
         direction: definition.direction,
     }
     if (definition.step !== null) {
@@ -84,6 +99,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        format: {
+            type: Function,
+            default: null,
+        },
         direction: {
             type: String,
             default: 'ltr',
@@ -112,6 +131,7 @@ export default {
                     slider.value = recreateSlider(slider.value, sliderEl.value, props, context)
                 }
             })
+            watchEffect(() => updateTooltip(slider.value, props))
         })
 
         const containerClasses = computed(() => {

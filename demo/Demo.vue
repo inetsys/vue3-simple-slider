@@ -1,83 +1,106 @@
 <template>
-    <h2>1.- Simple use</h2>
-    <slider
-        v-model="example01.value"
-        :min="example01.min"
-        :max="example01.max"
-    />
-    <div>
-        <button type="button" @click="example01.value = '50'">Set 50</button>
-    </div>
-    <pre>Value: {{ example01.value }} ({{ typeof example01.value }})</pre>
+    <section>
+        <h2>1.- Simple use</h2>
+        <slider
+            v-model="example01.value"
+            :min="example01.min"
+            :max="example01.max"
+        />
+        <div>
+            <button type="button" @click="example01.value = '50'">Set 50</button>
+        </div>
+        <pre>Value: {{ example01.value }} ({{ typeof example01.value }})</pre>
+    </section>
 
-    <h2>2.- Numeric values</h2>
-    <slider
-        v-model.number="example02.value"
-        :min="example02.min"
-        :max="example02.max"
-    />
-    <pre>Value: {{ example02.value }} ({{ typeof example02.value }})</pre>
+    <section>
+        <h2>2.- Numeric values</h2>
+        <slider
+            v-model.number="example02.value"
+            :min="example02.min"
+            :max="example02.max"
+        />
+        <pre>Value: {{ example02.value }} ({{ typeof example02.value }})</pre>
+    </section>
 
-    <h2>3.- Disable slider</h2>
-    <slider
-        v-model="example03.value"
-        :min="example03.min"
-        :max="example03.max"
-        :disabled="example03.disabled"
-    />
-    <div>
-        <label>
-            <input type="checkbox" v-model="example03.disabled">
-            Disable
-        </label>
-    </div>
-    <pre>Value: {{ example03.value }}</pre>
+    <section>
+        <h2>3.- Disable slider</h2>
+        <slider
+            v-model="example03.value"
+            :min="example03.min"
+            :max="example03.max"
+            :disabled="example03.disabled"
+        />
+        <div>
+            <label>
+                <input type="checkbox" v-model="example03.disabled">
+                Disable
+            </label>
+        </div>
+        <pre>Value: {{ example03.value }}</pre>
+    </section>
 
-    <h2>4.- Step</h2>
-    <slider
-        v-model.number="example04.value"
-        :min="example04.min"
-        :max="example04.max"
-        :step="example04.step"
-    />
-    <pre>Value: {{ example04.value }}</pre>
+    <section>
+        <h2>4.- Step</h2>
+        <slider
+            v-model.number="example04.value"
+            :min="example04.min"
+            :max="example04.max"
+            :step="example04.step"
+        />
+        <pre>Value: {{ example04.value }}</pre>
+    </section>
 
-    <h2>5.- Tooltip</h2>
-    <slider
-        v-model="example05.value"
-        :min="example05.min"
-        :max="example05.max"
-        show-value
-    />
-    <pre>Value: {{ example05.value }}</pre>
+    <section>
+        <h2>5.- Tooltip</h2>
+        <slider
+            v-model="example05.value"
+            :min="example05.min"
+            :max="example05.max"
+            :show-value="example05.tooltip"
+            :format="example05.customFormat ? example05FormatMethod : null"
+        />
+        <div>
+            <label>
+                <input type="checkbox" v-model="example05.tooltip"> Show tooltip
+            </label>
+        </div>
+        <div>
+            <label>
+                <input type="checkbox" v-model="example05.customFormat" :disabled="!example05.tooltip"> Custom format
+            </label>
+        </div>
+        <pre>Value: {{ example05.value }}</pre>
+    </section>
 
-    <h2>6.- Language direction - right to left</h2>
-    <slider
-        v-model="example06.value"
-        :min="example06.min"
-        :max="example06.max"
-        :direction="example06.direction"
-        show-value
-    />
-    <div>
-        <label>
-            <input type="radio"
-                value="ltr"
-                v-model="example06.direction"
-                name="example06direction"
-            >
-            Left to right
-        </label>
-        <label>
-            <input type="radio"
-                value="rtl"
-                v-model="example06.direction"
-                name="example06direction"
-            >
-            Right to left
-        </label>
-    </div>
-    <pre>Value: {{ example06.value }}</pre>
+    <section>
+        <h2>6.- Language direction - right to left</h2>
+        <slider
+            v-model="example06.value"
+            :min="example06.min"
+            :max="example06.max"
+            :direction="example06.direction"
+            show-value
+        />
+        <div>
+            <label>
+                <input type="radio"
+                    value="ltr"
+                    v-model="example06.direction"
+                    name="example06direction"
+                >
+                Left to right
+            </label>
+            <label>
+                <input type="radio"
+                    value="rtl"
+                    v-model="example06.direction"
+                    name="example06direction"
+                >
+                Right to left
+            </label>
+        </div>
+        <pre>Value: {{ example06.value }}</pre>
+    </section>
 </template>
 
 <script>
@@ -87,6 +110,13 @@ export default {
     name: 'Demo',
     components: {
         Slider,
+    },
+    setup() {
+        return {
+            example05FormatMethod(value) {
+                return 'Price: ' + value.toFixed(2) + '€'
+            },
+        }
     },
     data() {
         return {
@@ -116,7 +146,8 @@ export default {
                 value: 5,
                 min: 0,
                 max: 10,
-                step: 1,
+                tooltip: true,
+                customFormat: false,
             },
             example06: {
                 value: 0,
