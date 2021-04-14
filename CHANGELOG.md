@@ -1,6 +1,6 @@
 # Changelog
 
-### 1.2.0-dev
+### 1.2.0 (*2021-04-14*)
 - Improvement: Property `showValue` is now reactive
 - Improvement: Property `step` is now reactive
 - Changed: Format of output value depends on the number of decimals in limit values and defined step
