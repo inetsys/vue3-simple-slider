@@ -8,8 +8,50 @@
 import { ref, onMounted, watch, watchEffect, computed } from 'vue'
 import nouislider from 'nouislider'
 
+function isNumeric(property) {
+    return Number(property) === property
+}
+function getNumberOfDecimals(value) {
+    return (('' + value).split('.')[1] || '').length
+}
 function directionIsValid(direction) {
     return ['rtl', 'ltr'].indexOf(direction) > -1
+}
+
+function buildOptionFormat(definition) {
+    let decimals = Math.max(getNumberOfDecimals(definition.min), getNumberOfDecimals(definition.max))
+    if (isNumeric(definition.step)) {
+        decimals = Math.max(decimals, getNumberOfDecimals(definition.step))
+    }
+    else {
+        decimals = Math.max(decimals, 3)
+    }
+    const formatterMethod = function(value) {
+        return '' + Number(value.toFixed(decimals))
+    }
+
+    return {
+        format: {
+            to: formatterMethod,
+            from(value) { // String
+                return Number(value)
+            },
+        },
+    }
+}
+function buildOptionStep(definition) {
+    return {
+        step: isNumeric(definition.step) ? definition.step : null,
+    }
+}
+function buildOptionTooltip(definition) {
+    const tooltipFormatter = definition.format
+        ? { to: definition.format }
+        : true
+
+    return {
+        tooltips: definition.showValue ? tooltipFormatter : false,
+    }
 }
 
 function toggleDisabled(element, disable) {
@@ -21,15 +63,14 @@ function toggleDisabled(element, disable) {
     }
 }
 
+function updateFormat(slider, definition) {
+    slider.updateOptions(buildOptionFormat(definition))
+}
+function updateStep(slider, definition) {
+    slider.updateOptions(buildOptionStep(definition))
+}
 function updateTooltip(slider, definition) {
-    const tooltipFormatter = definition.format
-        ? { to: definition.format }
-        : true
-    const sliderOptions = {
-        tooltips: definition.showValue ? tooltipFormatter : false,
-    }
-
-    slider.updateOptions(sliderOptions)
+    slider.updateOptions(buildOptionTooltip(definition))
 }
 
 function createSlider(element, definition, context) {
@@ -37,10 +78,6 @@ function createSlider(element, definition, context) {
     if (definition.modelValue === null) {
         context.emit('update:modelValue', initialValue.toFixed(2))
     }
-
-    const tooltipFormatter = definition.format
-        ? { to: definition.format }
-        : true
 
     const sliderOptions = {
         cssPrefix: 'slider--',
@@ -50,11 +87,10 @@ function createSlider(element, definition, context) {
             max: definition.max,
         },
         connect: [true, true],
-        tooltips: definition.showValue ? tooltipFormatter : false,
         direction: definition.direction,
-    }
-    if (definition.step !== null) {
-        sliderOptions.step = definition.step
+        ...buildOptionStep(definition),
+        ...buildOptionFormat(definition),
+        ...buildOptionTooltip(definition),
     }
 
     const slider = nouislider.create(element, sliderOptions)
@@ -132,6 +168,8 @@ export default {
                 }
             })
             watchEffect(() => updateTooltip(slider.value, props))
+            watchEffect(() => updateFormat(slider.value, props))
+            watchEffect(() => updateStep(slider.value, props))
         })
 
         const containerClasses = computed(() => {

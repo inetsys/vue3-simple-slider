@@ -2,6 +2,8 @@
 
 ### 1.2.0-dev
 - Improvement: Property `showValue` is now reactive
+- Improvement: Property `step` is now reactive
+- Changed: Format of output value depends on the number of decimals in limit values and defined step
 - Added: Tooltip formatter: reactive property `format`
 
 ### 1.1.0 (*2021-03-31*)
