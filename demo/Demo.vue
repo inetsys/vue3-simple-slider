@@ -22,6 +22,11 @@
             </div>
             <div>
                 <label>
+                    <button type="button" @click="example01.value = null">Empty</button>
+                </label>
+            </div>
+            <div>
+                <label>
                     <input type="checkbox" v-model="example01.tooltip"> Show tooltip
                 </label>
                 <label>

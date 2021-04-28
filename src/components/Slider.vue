@@ -50,7 +50,7 @@ function buildOptionTooltip(definition) {
         : true
 
     return {
-        tooltips: definition.showValue ? tooltipFormatter : false,
+        tooltips: definition.showValue && definition.modelValue !== null ? tooltipFormatter : false,
     }
 }
 
@@ -73,15 +73,16 @@ function updateTooltip(slider, definition) {
     slider.updateOptions(buildOptionTooltip(definition))
 }
 
-function createSlider(element, definition, context) {
-    const initialValue = definition.modelValue !== null ? definition.modelValue : definition.min
-    if (definition.modelValue === null) {
-        context.emit('update:modelValue', initialValue.toFixed(2))
-    }
+function normalizeValue(slider) {
+    return slider.modelValue !== null
+        ? slider.modelValue
+        : slider.min + (slider.max - slider.min) / 2
+}
 
+function createSlider(element, definition, context) {
     const sliderOptions = {
         cssPrefix: 'slider--',
-        start: initialValue,
+        start: normalizeValue(definition),
         range: {
             min: definition.min,
             max: definition.max,
@@ -159,7 +160,7 @@ export default {
             })
             watch(() => props.modelValue, newValue => {
                 if (slider.value.get() !== newValue) {
-                    slider.value.set(newValue)
+                    slider.value.set(normalizeValue(props))
                 }
             })
             watch(() => props.direction, newValue => {
@@ -178,6 +179,7 @@ export default {
             props.showValue && classes.push('slider--shown-value')
             props.min === props.modelValue && classes.push('slider--min')
             props.max === props.modelValue && classes.push('slider--max')
+            props.modelValue === null && classes.push('slider--empty')
 
             return classes
         })
