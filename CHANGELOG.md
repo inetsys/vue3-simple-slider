@@ -1,5 +1,8 @@
 # Changelog
 
+### 1.3.0 (*2021-04-28*)
+- Changed: An empty value is allowed, displayed centered in the scale
+
 ### 1.2.0 (*2021-04-14*)
 - Improvement: Property `showValue` is now reactive
 - Improvement: Property `step` is now reactive
