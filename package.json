@@ -1,14 +1,13 @@
 {
   "name": "@inetsys/vue3-simple-slider",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Simple slider input for Vue3",
   "type": "module",
-  "main": "./dist/scrf-slider.umd.cjs",
-  "module": "./dist/scrf-slider.js",
+  "main": "./dist/vue3-simple-slider.js",
+  "module": "./dist/vue3-simple-slider.js",
   "exports": {
     ".": {
-      "import": "./dist/scrf-slider.js",
-      "require": "./dist/scrf-slider.umd.cjs"
+      "import": "./dist/vue3-simple-slider.js"
     }
   },
   "keywords": [
@@ -19,11 +18,11 @@
   "bugs": "https://github.com/inetsys/vue3-simple-slider/issues",
   "license": "MIT",
   "scripts": {
-    "dev": "vite demo/dev.js",
+    "dev": "vite",
     "prebuild": "rm -rf ./dist",
     "build": "vite build",
     "lint": "eslint .",
-    "prepack": "yarn run build"
+    "prepack": "yarn run lint && yarn run build"
   },
   "files": [
     "dist"
