@@ -1,3 +1,3 @@
-import Slider from './components/Slider.vue'
+import ScrfSlider from './components/Slider.vue'
 
-export default Slider
+export { ScrfSlider }

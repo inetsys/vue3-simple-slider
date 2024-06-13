@@ -1,15 +1,11 @@
 <template>
     <section>
         <h2>1.- Simple use</h2>
-        <slider
-            v-model="example01.value"
-            :min="example01.min"
-            :max="example01.max"
-            :disabled="example01.disabled"
-            :step="example01.stepEnabled ? example01.step : null"
-            :show-value="example01.tooltip"
-            :format="example01.customFormat ? customFormatter : null"
-            :direction="example01.direction"
+        <ScrfSlider
+            v-model="example01.value" :min="example01.min" :max="example01.max" :disabled="example01.disabled"
+            :step="example01.stepEnabled ? example01.step : null" :show-value="example01.tooltip"
+            :format="example01.customFormat ? customFormatter : null" :direction="example01.direction"
+            :layout="example01.layout"
         />
         <div class="options">
             <div>
@@ -30,7 +26,8 @@
                     <input type="checkbox" v-model="example01.tooltip"> Show tooltip
                 </label>
                 <label>
-                    <input type="checkbox" v-model="example01.customFormat" :disabled="!example01.tooltip"> Custom format
+                    <input type="checkbox" v-model="example01.customFormat" :disabled="!example01.tooltip"> Custom
+                    format
                 </label>
             </div>
             <div>
@@ -42,20 +39,22 @@
             </div>
             <div>
                 <label>
-                    <input type="radio"
-                        value="ltr"
-                        v-model="example01.direction"
-                        name="example01direction"
-                    >
+                    <input type="radio" value="ltr" v-model="example01.direction" name="example01direction">
                     Left to right
                 </label>
                 <label>
-                    <input type="radio"
-                        value="rtl"
-                        v-model="example01.direction"
-                        name="example01direction"
-                    >
+                    <input type="radio" value="rtl" v-model="example01.direction" name="example01direction">
                     Right to left
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="radio" value="horizontal" v-model="example01.layout" name="example01layout">
+                    Horizontal
+                </label>
+                <label>
+                    <input type="radio" value="vertical" v-model="example01.layout" name="example01layout">
+                    Vertical
                 </label>
             </div>
         </div>
@@ -64,22 +63,18 @@
 
     <section>
         <h2>2.- Numeric values</h2>
-        <slider
-            v-model.number="example02.value"
-            :min="example02.min"
-            :max="example02.max"
-        />
+        <ScrfSlider v-model.number="example02.value" :min="example02.min" :max="example02.max" />
         <pre>Value: {{ example02.value }} ({{ typeof example02.value }})</pre>
     </section>
 </template>
 
 <script>
-import Slider from '@/main.js'
+import { ScrfSlider } from '@/main.js'
 
 export default {
-    name: 'Demo',
+    name: 'DemoApp',
     components: {
-        Slider,
+        ScrfSlider,
     },
     setup() {
         return {
@@ -100,6 +95,7 @@ export default {
                 tooltip: true,
                 customFormat: false,
                 direction: 'ltr',
+                layout: 'horizontal',
             },
             example02: {
                 value: null,

@@ -1,5 +1,10 @@
 # Changelog
 
+### 2.0.0 (*2024-06-13*)
+- Added: Vertical layout
+- Changed: Updated dependency: nouislider@15.8.0
+- Changed: Development environment with Vite
+
 ### 1.3.0 (*2021-04-28*)
 - Changed: An empty value is allowed, displayed centered in the scale
 
