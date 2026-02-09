@@ -274,14 +274,16 @@ export default {
         }
         // Offset direction
         &-txt-dir-rtl {
-            .noUi-horizontal {
-                .noUi-origin {
-                    left: 0;
+            &.noUi-horizontal {
+                .noUi-handle {
+                    left: calc(var(--slider-handle-width) * -1);
                     right: auto;
                 }
-                .noUi-handle {
-                    // left: -17px;
-                    right: auto;
+            }
+            &.noUi-vertical {
+                .noUi-origin {
+                    left: unset;
+                    right: 50%;
                 }
             }
         }
