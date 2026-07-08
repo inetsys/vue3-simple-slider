@@ -8,6 +8,9 @@
   "exports": {
     ".": {
       "import": "./dist/vue3-simple-slider.js"
+    },
+    "./style.css": {
+      "default": "./dist/style.css"
     }
   },
   "keywords": [
